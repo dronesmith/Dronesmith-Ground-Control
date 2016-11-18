@@ -8,11 +8,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/"
+    "url": "git+https://github.com/dronesmith/Dronesmith-Ground-Control.git"
   },
-  "keywords": [
-    "react, leaflet"
-  ],
   "author": "Geoff Gardner <geoff@dronesmith.io>",
   "license": "BSD-3-Clause",
   "devDependencies": {
