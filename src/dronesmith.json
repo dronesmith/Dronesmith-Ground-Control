@@ -1,5 +1,5 @@
 {
-    "email": "test@test.com",
-    "key": "a1204f04-c2a9-477b-ae20-a8bba455da09",
-    "drone": "peaceful_bartik"
+  "email": "your-account-email",
+  "key": "your-api-key",
+  "drone": "your-drone-name"
 }
