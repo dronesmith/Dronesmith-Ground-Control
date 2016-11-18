@@ -14,7 +14,7 @@ Click the side bar of the app to bring down the `actions` tab. Click `takeoff` t
 ## Getting Started
 1. You'll need [NodeJS](https://nodejs.org/), and a Dronesmith API account.
 
-2. Dronesmith API: Create an account. Navigate to our [API Page](api.dronesmith.io) and make an account. You will get an email within a few days with your account and API key.
+2. Dronesmith API: Create an account. Navigate to our [API Page](http://api.dronesmith.io) and make an account. You will get an email within a few days with your account and API key.
 
 3. [Create a virtual drone](http://readme.dronesmith.io/reference) on your account. Use the following REST request: `POST api.dronesmith.io/api/drone/<drone-name>`
 
