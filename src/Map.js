@@ -3,7 +3,9 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Nav from './Nav';
-import dronesmith from '!json!./dronesmith.json';
+import GroundControlApi from './GroundControlApi';
+import ReactInterval from 'react-interval';
+
 
 
 // store the map configuration properties in an object,
@@ -107,10 +109,20 @@ class Map extends Component {
   render() {
     return (
       <div id="mapUI">
+      <ReactInterval timeout={2000} enabled={true}
+        callback={() => {
+          GroundControlApi
+           .telemRequest('position')
+           .then((value) => {
+             this.state.map.options.center = [value.Latitude, value.Longitude]
+           })
+        }} />
         <MuiThemeProvider>
-          <Nav />
+          <div>
+            <Nav />
+          </div>
         </MuiThemeProvider>
-        <div style={{'marginTop': '-64px'}} ref={(node) => this._mapNode = node} id="map" />
+        <div style={{'marginTop': '-64px', 'position': 'static'}} ref={(node) => this._mapNode = node} id="map" />
       </div>
     );
   }

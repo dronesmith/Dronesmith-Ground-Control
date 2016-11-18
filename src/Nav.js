@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactInterval from 'react-interval';
 import AppBar from 'material-ui/AppBar';
 import {white} from 'material-ui/styles/colors';
 import SvgIcon from 'material-ui/SvgIcon';
@@ -6,6 +7,9 @@ import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import GroundControlApi from './GroundControlApi'
+import RaisedButton from 'material-ui/RaisedButton';
+
 
 const iconStyles = {
   width: '40px',
@@ -28,9 +32,13 @@ class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false};
+
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
+
+  takeoff = () => GroundControlApi.commandRequest('takeoff', {})
+  land = () => GroundControlApi.commandRequest('land', {})
 
   handleChange = (event, logged) => {
     this.setState({logged: logged});
@@ -39,6 +47,29 @@ class Nav extends React.Component {
     render() {
         return (
           <header>
+          <ReactInterval timeout={2000} enabled={true}
+            callback={() => {
+              GroundControlApi
+               .telemRequest('status')
+               .then((value) => {
+                 this.setState({
+                   power: value.Power,
+                   status: value.State
+                 })
+               })
+
+               GroundControlApi
+                .telemRequest('attitude')
+                .then((value) => {
+                  this.setState({heading: value.Yaw})
+                })
+
+                GroundControlApi
+                 .telemRequest('position')
+                 .then((value) => {
+                   this.setState({altitude: value.Altitude})
+                 })
+            }} />
             <AppBar
               iconElementLeft={<DronesmithIcon style={iconStyles} color={white} />}
               title="Dronesmith Ground Control"
@@ -50,6 +81,14 @@ class Nav extends React.Component {
                 onTitleTouchTap={this.handleToggle}
                 iconElementRight={<IconButton onTouchTap={this.handleToggle}><NavigationClose /></IconButton>}
               />
+              <RaisedButton onTouchTap={this.takeoff} label="Takeoff" fullWidth={true} primary={true} />
+              <RaisedButton onTouchTap={this.land} label="Land" fullWidth={true} secondary={true} />
+              <p>
+                Status: {this.state.status}<br />
+                Power: {this.state.power}<br />
+                Altitude: {this.state.altitude}<br />
+                Heading: {this.state.heading}
+              </p>
             </Drawer>
           </header>
     );
