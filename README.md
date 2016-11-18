@@ -24,7 +24,7 @@ Click the side bar of the app to bring down the `actions` tab. Click `takeoff` t
 
 6. After you've set up node, run `npm install` followed by `npm run start`
 
-To start the app! Navigate to `http:localhost:3000` in your browser. Note that the app will automatically open in your browser.
+To start the app! Navigate to `http://localhost:3000` in your browser. Note that the app will automatically open in your browser.
 
 ## Technologies
 * [Dronesmith](http://readme.dronesmith.io/reference)
