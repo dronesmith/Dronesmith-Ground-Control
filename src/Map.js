@@ -12,9 +12,9 @@ import ReactInterval from 'react-interval';
 // we could also move this to a separate file & import it if desired.
 let config = {};
 config.params = {
-  center: [40.655769,-73.938503],
+  center: [47.655769,8.538503],
   zoomControl: false,
-  zoom: 13,
+  zoom: 16,
   maxZoom: 19,
   minZoom: 11,
   scrollwheel: false,
@@ -39,9 +39,7 @@ class Map extends Component {
       map: null,
       tileLayer: null,
       geojsonLayer: null,
-      geojson: null,
-      subwayLinesFilter: '*',
-      numEntrances: null
+      geojson: null
     };
     this._mapNode = null;
     this.updateMap = this.updateMap.bind(this);
@@ -96,6 +94,15 @@ class Map extends Component {
     if (this.state.map) return;
     // this function creates the Leaflet map object and is called after the Map component mounts
     let map = L.map(id, config.params);
+
+    map.on('click', (e) => {
+      console.log(e);
+      GroundControlApi.commandRequest('goto', {lat: e.latlng.lat, lon: e.latlng.lng})
+    })
+
+    this.flightLatLngs = [];
+    this.flightPath = L.polyline(this.flightLatLngs, {color: 'red'}).addTo(map);
+
     L.control.scale({ position: "bottomright"}).addTo(map);
     L.control.zoom({ position: "bottomleft"}).addTo(map);
 
@@ -114,7 +121,11 @@ class Map extends Component {
           GroundControlApi
            .telemRequest('position')
            .then((value) => {
-             this.state.map.options.center = [value.Latitude, value.Longitude]
+            //  this.state.map.options.flyTo(value.Latitude, value.Longitude)
+            let ll = new L.LatLng(value.Latitude, value.Longitude);
+            this.flightLatLngs.push(ll);
+            this.state.map.panTo(ll);
+            this.flightPath.setLatLngs(this.flightLatLngs);
            })
         }} />
         <MuiThemeProvider>
@@ -122,7 +133,7 @@ class Map extends Component {
             <Nav />
           </div>
         </MuiThemeProvider>
-        <div style={{'marginTop': '-64px', 'position': 'static'}} ref={(node) => this._mapNode = node} id="map" />
+        <div style={{'marginTop': '-65px', 'position': 'static'}} ref={(node) => this._mapNode = node} id="map" />
       </div>
     );
   }
