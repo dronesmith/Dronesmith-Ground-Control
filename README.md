@@ -16,7 +16,7 @@ Click the side bar of the app to bring down the `actions` tab. Click `takeoff` t
 
 2. Dronesmith API: Create an account. Navigate to our [API Page](api.dronesmith.io) and make an account. You will get an email within a few days with your account and API key.
 
-3. [Create a virtual drone](readme.dronesmith.io/reference) on your account. Use the following REST request: `POST api.dronesmith.io/api/drone/<drone-name>`
+3. [Create a virtual drone](http://readme.dronesmith.io/reference) on your account. Use the following REST request: `POST api.dronesmith.io/api/drone/<drone-name>`
 
 4. `POST api.dronesmith.io/api/drone/<drone-name>/start` to initialize your drone.
 
@@ -27,8 +27,8 @@ Click the side bar of the app to bring down the `actions` tab. Click `takeoff` t
 To start the app! Navigate to `http:localhost:3000` in your browser. Note that the app will automatically open in your browser.
 
 ## Technologies
-* [Dronesmith](readme.dronesmith.io/reference)
-* [Xapix](xapix.io) (soon!!)
+* [Dronesmith](http://readme.dronesmith.io/reference)
+* [Xapix](http://xapix.io) (soon!!)
 * [Leaflet](http://leafletjs.com/)
 * [MapQuest](http://open.mapquest.com/)
 * [React](https://facebook.github.io/react/)
