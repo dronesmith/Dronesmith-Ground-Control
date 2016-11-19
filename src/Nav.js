@@ -9,6 +9,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import GroundControlApi from './GroundControlApi'
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 
 const iconStyles = {
@@ -28,11 +29,19 @@ const DronesmithIcon = (props) => (
   </SvgIcon>
 );
 
+var Locale = "";
+var Dest = "";
+var Mission = [];
+var NewMission = false;
+var InMission = false;
+var MissionCtr = 0;
+
 class Nav extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false};
-
+    this.locale = "";
+    this.dest = "";
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
@@ -43,6 +52,39 @@ class Nav extends React.Component {
   handleChange = (event, logged) => {
     this.setState({logged: logged});
   };
+
+  getLocation(e, text) {
+    Locale = text;
+  }
+
+  getDest(e, text) {
+    Dest = text;
+  }
+
+  routeDest(e) {
+
+    if (MQ && MQ.routing) {
+      console.log("routing...");
+      let dir = MQ.routing.directions().on('success', function(data) {
+        var legs = data.route.legs;
+        console.log("Got route:", legs);
+
+        if (legs && legs.length > 0) {
+          Mission = legs[0].maneuvers;
+          console.log(Mission);
+          NewMission = true;
+          InMission = true;
+        }
+      });
+
+      dir.route({
+        locations: [
+          Locale,
+          Dest
+        ]
+      });
+    }
+  }
 
     render() {
         return (
@@ -58,6 +100,24 @@ class Nav extends React.Component {
                  })
                })
 
+               if (NewMission) {
+                 NewMission = false;
+                 MissionCtr = 0;
+               }
+
+               // Check Pos
+               if (InMission) {
+
+                 var mission = Mission[MissionCtr];
+
+                 var ll = mission.startPoint;
+                 console.log(mission);
+                 console.log(mission.startPoint);
+
+                 GroundControlApi.commandRequest('goto', {speed: 20, lat: ll.lat, lon: ll.lng})
+               }
+
+
                GroundControlApi
                 .telemRequest('attitude')
                 .then((value) => {
@@ -67,6 +127,27 @@ class Nav extends React.Component {
                 GroundControlApi
                  .telemRequest('position')
                  .then((value) => {
+
+                   Locale = ''+value.Latitude + ', ' + ''+value.Longitude;
+
+                   if (InMission) {
+                     var mission = Mission[MissionCtr];
+                     var ll = mission.startPoint;
+
+                    if (Math.abs(value.Latitude - ll.lat) < 0.0001
+                    && Math.abs(value.Longitude - ll.lng) < 0.0001) {
+                      console.log("Inc mission");
+                      MissionCtr++;
+
+                      if (MissionCtr > Mission.length) {
+                        console.log("Mission Complete. You have arrived.");
+                        InMission = false;
+                        GroundControlApi.commandRequest('goto', {relativePos: true, lat: 0, lon: 0})
+                      }
+                    }
+                   }
+
+
                    this.setState({altitude: value.Altitude})
                  })
             }} />
@@ -89,6 +170,13 @@ class Nav extends React.Component {
                 Altitude: {this.state.altitude}<br />
                 Heading: {this.state.heading}
               </p>
+
+              <TextField
+              onChange={this.getDest}
+              hintText="Enter Destination"
+              fullWidth={true}
+              />
+              <RaisedButton onTouchTap={this.routeDest} label="GO!" fullWidth={true} primary={true} />
             </Drawer>
           </header>
     );
