@@ -9,3 +9,19 @@ html, body {
   height: inherit;
   background-color: #FFF;
 }
+
+.chevron::before {
+  color: #003b71;
+  margin-left: -1.4em;
+	border-style: solid;
+	border-width: 1.2em 1.2em 0 0;
+	content: '';
+	display: inline-block;
+	height: 2em;
+	left: 0.15em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-45deg);
+	vertical-align: top;
+	width: 2em;
+}

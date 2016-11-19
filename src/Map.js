@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
+import 'leaflet-rotatedmarker/leaflet.rotatedMarker';
 import 'leaflet/dist/leaflet.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Nav from './Nav';
 import GroundControlApi from './GroundControlApi';
 import ReactInterval from 'react-interval';
-
-
 
 // store the map configuration properties in an object,
 // we could also move this to a separate file & import it if desired.
@@ -94,6 +93,9 @@ class Map extends Component {
     if (this.state.map) return;
     // this function creates the Leaflet map object and is called after the Map component mounts
     let map = L.map(id, config.params);
+    let droneIcon = L.divIcon({className: 'chevron'});
+    this.droneMarker = L.marker([0,0], {rotationAngle: 0, icon: droneIcon});
+    this.droneMarker.addTo(map);
 
     map.on('click', (e) => {
       console.log(e);
@@ -126,6 +128,8 @@ class Map extends Component {
             this.flightLatLngs.push(ll);
             this.state.map.panTo(ll);
             this.flightPath.setLatLngs(this.flightLatLngs);
+            this.droneMarker.setLatLng(ll);
+            this.droneMarker.setRotationAngle(value.Heading);
            })
         }} />
         <MuiThemeProvider>
