@@ -6,6 +6,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Nav from './Nav';
 import GroundControlApi from './GroundControlApi';
 import ReactInterval from 'react-interval';
+import DirForm from './DirForm';
+
 
 // store the map configuration properties in an object,
 // we could also move this to a separate file & import it if desired.
@@ -135,6 +137,7 @@ class Map extends Component {
         <MuiThemeProvider>
           <div>
             <Nav />
+            <DirForm />
           </div>
         </MuiThemeProvider>
         <div style={{'marginTop': '-65px', 'position': 'static'}} ref={(node) => this._mapNode = node} id="map" />
