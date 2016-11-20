@@ -61,6 +61,12 @@ class Nav extends React.Component {
     Dest = text;
   }
 
+  cancelMission(e) {
+    InMission = false;
+    MissionCtr = 0;
+    Mission = [];
+  }
+
   routeDest(e) {
 
     if (MQ && MQ.routing) {
@@ -139,14 +145,15 @@ class Nav extends React.Component {
                       console.log("Inc mission");
                       MissionCtr++;
 
-                      if (MissionCtr > Mission.length) {
+                      if (MissionCtr >= Mission.length) {
                         console.log("Mission Complete. You have arrived.");
                         InMission = false;
+                        MissionCtr = 0;
+                        Mission = [];
                         GroundControlApi.commandRequest('goto', {relativePos: true, lat: 0, lon: 0})
                       }
                     }
                    }
-
 
                    this.setState({altitude: value.Altitude})
                  })
@@ -177,6 +184,7 @@ class Nav extends React.Component {
               fullWidth={true}
               />
               <RaisedButton onTouchTap={this.routeDest} label="GO!" fullWidth={true} primary={true} />
+              <RaisedButton onTouchTap={this.cancelMission} label="Cancel" fullWidth={true} secondary={true} />
             </Drawer>
           </header>
     );

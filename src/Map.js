@@ -8,20 +8,6 @@ import Nav from './Nav';
 import GroundControlApi from './GroundControlApi';
 import ReactInterval from 'react-interval';
 
-// Terrible, terrible hack :(
-// Thanks for breaking in strict mode javascript, MapQuest.
-var js = document.createElement("script");
-js.type = "text/javascript";
-js.src = '../lib/mq-map.js';
-document.body.appendChild(js);
-js.onload = () => {
-  var js2 = document.createElement("script");
-  js2.type = "text/javascript";
-  js2.src = "../lib/mq-routing.js";
-  document.body.appendChild(js2);
-}
-
-
 // store the map configuration properties in an object,
 // we could also move this to a separate file & import it if desired.
 let config = {};
