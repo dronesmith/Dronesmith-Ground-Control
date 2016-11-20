@@ -39,9 +39,7 @@ var MissionCtr = 0;
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {open: false};
-    this.locale = "";
-    this.dest = "";
+    this.state = {open: false, missionText: ""};
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
@@ -61,16 +59,17 @@ class Nav extends React.Component {
     Dest = text;
   }
 
-  cancelMission(e) {
+  cancelMission = (e) => {
     InMission = false;
     MissionCtr = 0;
     Mission = [];
+    this.setState({missionText: ""});
   }
 
-  routeDest(e) {
+  routeDest = (e) => {
 
     if (MQ && MQ.routing) {
-      console.log("routing...");
+      this.setState({missionText: "Drone: Routing..."});
       let dir = MQ.routing.directions().on('success', function(data) {
         var legs = data.route.legs;
         console.log("Got route:", legs);
@@ -137,8 +136,10 @@ class Nav extends React.Component {
                    Locale = ''+value.Latitude + ', ' + ''+value.Longitude;
 
                    if (InMission) {
-                     var mission = Mission[MissionCtr];
-                     var ll = mission.startPoint;
+                     let mission = Mission[MissionCtr];
+                     let ll = mission.startPoint;
+
+                     this.setState({missionText: "Drone: " + mission.narrative});
 
                     if (Math.abs(value.Latitude - ll.lat) < 0.0001
                     && Math.abs(value.Longitude - ll.lng) < 0.0001) {
@@ -146,7 +147,7 @@ class Nav extends React.Component {
                       MissionCtr++;
 
                       if (MissionCtr >= Mission.length) {
-                        console.log("Mission Complete. You have arrived.");
+                        this.setState({missionText: "Drone: Mission Complete."});
                         InMission = false;
                         MissionCtr = 0;
                         Mission = [];
@@ -185,6 +186,8 @@ class Nav extends React.Component {
               />
               <RaisedButton onTouchTap={this.routeDest} label="GO!" fullWidth={true} primary={true} />
               <RaisedButton onTouchTap={this.cancelMission} label="Cancel" fullWidth={true} secondary={true} />
+
+              <p>{this.state.missionText}</p>
             </Drawer>
           </header>
     );
