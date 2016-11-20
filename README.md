@@ -34,5 +34,8 @@ To start the app! Navigate to `http://localhost:3000` in your browser. Note that
 * [React](https://facebook.github.io/react/)
 * [Material Design](https://material.google.com/)
 
+## Caveats
+Currently the app is all clientside and data is transient. If you refresh the page in the middle of a mission, it will cause the mission to stop!
+
 ## Thanks
 Adapted from https://github.com/clhenrick/React-Leaflet-demo
