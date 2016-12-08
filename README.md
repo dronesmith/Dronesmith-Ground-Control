@@ -12,7 +12,7 @@ This app shows a basic ground control and drone monitor using Dronesmith API.
 Click the side bar of the app to bring down the `actions` tab. Click `takeoff` to takeoff and `land` to land. Once the drone is in the air, you can click anyhwere on the map and it will fly to that location.
 
 ## Dronesmith API
-[Sign up here](http://api.dronesmith.io/) to get a Dronesmith API account if you don't have one already. You will get an email within a couple of days with your key at most.
+[Sign up here](http://api.dronesmith.io/) to get a Dronesmith API account if you don't have one already. You will get an email within a couple of business days with your key.
 
 ## Getting Started
 1. You'll need [NodeJS](https://nodejs.org/), and a Dronesmith API account.
