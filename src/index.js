@@ -21,9 +21,10 @@ js.onload = () => {
   js2.type = "text/javascript";
   js2.src = "../lib/mq-routing.js";
   document.body.appendChild(js2);
-}
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+  ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+  );
+
+}

@@ -110,10 +110,11 @@ class Map extends Component {
     L.control.zoom({ position: "bottomleft"}).addTo(map);
 
     // a TileLayer is used as the "basemap"
-    const tileLayer = L.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
+    map.addLayer(MQ.mapLayer());
+    // const tileLayer = L.tileLayer(config.tileLayer.uri, config.tileLayer.params).addTo(map);
 
     // set our state to include the tile layer
-    this.setState({ map, tileLayer });
+    this.setState({ map });
   }
 
   render() {
@@ -127,6 +128,8 @@ class Map extends Component {
             //  this.state.map.options.flyTo(value.Latitude, value.Longitude)
             let ll = new L.LatLng(value.Latitude, value.Longitude);
             this.flightLatLngs.push(ll);
+
+            console.log(this.state);
             this.state.map.panTo(ll);
             this.flightPath.setLatLngs(this.flightLatLngs);
             this.droneMarker.setLatLng(ll);
